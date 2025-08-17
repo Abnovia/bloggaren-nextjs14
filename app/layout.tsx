@@ -27,28 +27,25 @@ export default function RootLayout({
   return (
     <html lang="sv">
       <head>
-        <style>
-          {`
-            @media (prefers-color-scheme: dark) {
-              body { background-color: #0f172a !important; }
-              main { background-color: #0f172a !important; }
-            }
-            /* Debug - this should show if media query works */
-            @media (prefers-color-scheme: dark) {
-              body::before {
-                content: "DARK MODE DETECTED";
-                position: fixed;
-                top: 0;
-                left: 0;
-                background: red;
-                color: white;
-                padding: 10px;
-                z-index: 9999;
-                font-size: 12px;
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                  document.body.style.backgroundColor = '#0f172a';
+                }
+                localStorage.setItem('theme', theme);
+              } catch(e) {
+                // Fallback for browsers that don't support matchMedia
+                document.documentElement.classList.add('dark');
+                document.body.style.backgroundColor = '#0f172a';
               }
-            }
-          `}
-        </style>
+            `,
+          }}
+        />
       </head>
       <body className="dark:bg-slate-900 min-h-screen flex flex-col">
         <Navbar />
