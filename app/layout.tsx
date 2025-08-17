@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="sv">
       <body className="dark:bg-slate-900 min-h-screen flex flex-col">
         <Navbar />
-        <main className="px-4 md:px-6 prose prose-xl prose-slate dark:prose-invert mx-auto flex-grow">
+        <main className="px-4 md:px-6 prose prose-slate dark:prose-invert mx-auto flex-grow">
           {children}
         </main>
         <Footer />
