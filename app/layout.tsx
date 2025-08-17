@@ -35,7 +35,18 @@ export default function RootLayout({
                   (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
                 document.documentElement.classList.toggle('dark', theme === 'dark');
                 localStorage.setItem('theme', theme);
+                console.log('Dark mode applied:', theme, document.documentElement.classList.contains('dark'));
               })();
+            `,
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @media (prefers-color-scheme: dark) {
+                body { background-color: rgb(15 23 42) !important; }
+                main { background-color: rgb(15 23 42) !important; }
+              }
             `,
           }}
         />
