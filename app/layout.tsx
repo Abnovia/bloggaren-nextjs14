@@ -27,48 +27,22 @@ export default function RootLayout({
   return (
     <html lang="sv">
       <head>
-        <style>
-          {`
-            /* Force dark mode with CSS and media query fallback */
-            @media (prefers-color-scheme: dark) {
-              html, body, main { background-color: #0f172a !important; color: #e2e8f0 !important; }
-            }
-            /* Also force it for devices that have dark theme set */
-            html.dark, html.dark body, html.dark main { background-color: #0f172a !important; color: #e2e8f0 !important; }
-          `}
-        </style>
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              (function() {
-                // Multiple methods to detect and force dark mode
-                function applyDarkMode() {
-                  document.documentElement.classList.add('dark');
-                  document.documentElement.style.backgroundColor = '#0f172a';
-                  document.documentElement.style.color = '#e2e8f0';
-                  if (document.body) {
-                    document.body.style.backgroundColor = '#0f172a';
-                    document.body.style.color = '#e2e8f0';
-                  }
-                }
-                
-                // Check if system prefers dark mode
+              try {
                 const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const savedTheme = localStorage.getItem('theme');
-                const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-                
-                if (theme === 'dark' || prefersDark) {
-                  applyDarkMode();
-                  localStorage.setItem('theme', 'dark');
+                const theme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                  document.body.style.backgroundColor = '#0f172a';
                 }
-                
-                // Re-apply when page loads
-                document.addEventListener('DOMContentLoaded', function() {
-                  if (theme === 'dark' || prefersDark) {
-                    applyDarkMode();
-                  }
-                });
-              })();
+                localStorage.setItem('theme', theme);
+              } catch(e) {
+                // Fallback for browsers that don't support matchMedia
+                document.documentElement.classList.add('dark');
+                document.body.style.backgroundColor = '#0f172a';
+              }
             `,
           }}
         />
