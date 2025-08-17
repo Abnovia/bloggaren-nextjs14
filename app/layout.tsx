@@ -26,31 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="sv">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const theme = localStorage.getItem('theme') || 
-                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                document.documentElement.classList.toggle('dark', theme === 'dark');
-                localStorage.setItem('theme', theme);
-                console.log('Dark mode applied:', theme, document.documentElement.classList.contains('dark'));
-              })();
-            `,
-          }}
-        />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-              @media (prefers-color-scheme: dark) {
-                body { background-color: rgb(15 23 42) !important; }
-                main { background-color: rgb(15 23 42) !important; }
-              }
-            `,
-          }}
-        />
-      </head>
+      <head></head>
       <body className="dark:bg-slate-900 min-h-screen flex flex-col">
         <Navbar />
         <main className="px-4 md:px-6 prose prose-slate dark:prose-invert mx-auto flex-grow bg-white dark:bg-slate-900">
