@@ -1,6 +1,6 @@
 import { compileMDX } from 'next-mdx-remote/rsc'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings/lib'
-import rehypeHighlight from 'rehype-highlight/lib'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
 import Video from '@/app/components/Video'
 import CustomImage from '@/app/components/CustomImage'
@@ -28,31 +28,36 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
 
     if (rawMDX === '404: Not Found') return undefined
 
-    const { frontmatter, content } = await compileMDX<{ title: string, date: string, tags: string[] }>({
-        source: rawMDX,
-        components: {
-            Video,
-            CustomImage,
-        },
-        options: {
-            parseFrontmatter: true,
-            mdxOptions: {
-                rehypePlugins: [
-                    rehypeHighlight,
-                    rehypeSlug,
-                    [rehypeAutolinkHeadings, {
-                        behavior: 'wrap'
-                    }],
-                ],
+    try {
+        const { frontmatter, content } = await compileMDX<{ title: string, date: string, tags: string[] }>({
+            source: rawMDX,
+            components: {
+                Video,
+                CustomImage,
             },
-        }
-    })
+            options: {
+                parseFrontmatter: true,
+                mdxOptions: {
+                    rehypePlugins: [
+                        rehypeHighlight,
+                        rehypeSlug,
+                        [rehypeAutolinkHeadings, {
+                            behavior: 'wrap'
+                        }],
+                    ],
+                },
+            }
+        })
 
-    const id = fileName.replace(/\.mdx$/, '')
+        const id = fileName.replace(/\.mdx$/, '')
 
-    const blogPostObj: BlogPost = { meta: { id, title: frontmatter.title, date: frontmatter.date, tags: frontmatter.tags }, content }
+        const blogPostObj: BlogPost = { meta: { id, title: frontmatter.title, date: frontmatter.date, tags: frontmatter.tags }, content }
 
-    return blogPostObj
+        return blogPostObj
+    } catch (error) {
+        console.error('Error compiling MDX:', error)
+        return undefined
+    }
 }
 
 export async function getPostsMeta(): Promise<Meta[] | undefined> {
