@@ -1,5 +1,6 @@
 import './globals.css';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -25,11 +26,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="sv">
-      <body className="dark:bg-slate-900">
+      <body className="dark:bg-slate-900 min-h-screen flex flex-col">
         <Navbar />
-        <main className="px-4 md:px-6 prose prose-xl prose-slate dark:prose-invert mx-auto">
+        <main className="px-4 md:px-6 prose prose-xl prose-slate dark:prose-invert mx-auto flex-grow">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );

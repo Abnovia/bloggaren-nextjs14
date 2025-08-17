@@ -6,7 +6,7 @@ export default async function Posts() {
 
   if (!posts) {
     return (
-      <p className="mt-10 text-center">Ledsen, inga blogg tillgängliga.</p>
+      <p className="mt-10 text-center text-sm text-gray-600 dark:text-gray-400">Ledsen, inga blogg tillgängliga.</p>
     );
   }
 
