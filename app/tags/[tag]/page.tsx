@@ -5,9 +5,9 @@ import Link from 'next/link';
 export const revalidate = 86400;
 
 type Props = {
-  params: {
+  params: Promise<{
     tag: string;
-  };
+  }>;
 };
 
 export async function generateStaticParams() {
@@ -20,13 +20,15 @@ export async function generateStaticParams() {
   return Array.from(tags).map((tag) => ({ tag }));
 }
 
-export function generateMetadata({ params: { tag } }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { tag } = await params;
   return {
     title: `Blogg om ${tag}`,
   };
 }
 
-export default async function TagPostList({ params: { tag } }: Props) {
+export default async function TagPostList({ params }: Props) {
+  const { tag } = await params;
   const posts = await getPostsMeta(); //deduped!
 
   if (!posts)
