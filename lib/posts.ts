@@ -20,7 +20,8 @@ export async function getPostByName(fileName: string): Promise<BlogPost | undefi
             Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
         'X-GitHub-Api-Version': '2022-11-28',
     },
-    next: { revalidate: 3600 } // Cache for 1 hour
+        cache: 'force-cache' // Force caching for Next.js 16
+
 })
 
     if (!res.ok) return undefined
